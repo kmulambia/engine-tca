@@ -2,8 +2,8 @@
     "MAILER": {
         "NAME": "MAILER",
         "URL": "tcp://*:5555",
-        "EMAIL": "support@amphibia.com",
-        "FROM": "Amphibia"
+        "EMAIL": "support@immalawi.org",
+        "FROM": "Cyclone Ana Dashboard"
     },
     "TOKEN": {
         "SECRET": "WP7DpmphuaGa7ew08nHJcLIvBDKjPAVM",
