@@ -1,0 +1,12 @@
+{
+    "MAILER": {
+        "NAME": "MAILER",
+        "URL": "tcp://*:5555",
+        "EMAIL": "support@amphibia.com",
+        "FROM": "Amphibia"
+    },
+    "TOKEN": {
+        "SECRET": "WP7DpmphuaGa7ew08nHJcLIvBDKjPAVM",
+        "EXPIRES": "36000"
+    }
+}
