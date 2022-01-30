@@ -11,3 +11,4 @@ export * from './report.controller';
 export * from './partner.controller';
 export * from './partner-type.controller';
 export * from './partner-partner-type.controller';
+export * from './user-partner.controller';

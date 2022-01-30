@@ -1,6 +1,7 @@
 import {belongsTo, Entity, hasOne, model, property} from '@loopback/repository';
 import {Role} from './role.model';
 import {UserCredentials} from './user-credentials.model';
+import {Partner} from './partner.model';
 
 @model({
   settings: {
@@ -58,6 +59,9 @@ export class User extends Entity {
 
   @belongsTo(() => Role)
   roleId: string;
+
+  @belongsTo(() => Partner)
+  partnerId: string;
 
   constructor(data?: Partial<User>) {
     super(data);
