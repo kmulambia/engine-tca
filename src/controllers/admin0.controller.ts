@@ -37,12 +37,12 @@ export class Admin0Controller {
         'application/json': {
           schema: getModelSchemaRef(Admin0, {
             title: 'NewAdmin0',
-            exclude: ['admin0Pcode'],
+            exclude: ['id'],
           }),
         },
       },
     })
-    admin0: Omit<Admin0, 'admin0Pcode'>,
+    admin0: Omit<Admin0, 'id'>,
   ): Promise<Admin0> {
     return this.admin0Repository.create(admin0);
   }

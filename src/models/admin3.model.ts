@@ -3,11 +3,15 @@ import {Entity, model, property} from '@loopback/repository';
 
 @model()
 export class Admin3 extends Entity {
- 
+  @property({
+    type: 'any',
+    id: true,
+    generated: true,
+  })
+  id?: any;
+
   @property({
     type: 'string',
-    id: true,
-    generated: false,
     required: true,
   })
   admin3Pcode: string;
