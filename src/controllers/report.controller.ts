@@ -17,19 +17,19 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {Report} from '../models';
-import {ReportRepository} from '../repositories';
+import { Report } from '../models';
+import { ReportRepository } from '../repositories';
 
 export class ReportController {
   constructor(
     @repository(ReportRepository)
-    public reportRepository : ReportRepository,
-  ) {}
+    public reportRepository: ReportRepository,
+  ) { }
 
   @post('/reports')
   @response(200, {
     description: 'Report model instance',
-    content: {'application/json': {schema: getModelSchemaRef(Report)}},
+    content: { 'application/json': { schema: getModelSchemaRef(Report) } },
   })
   async create(
     @requestBody({
@@ -50,7 +50,7 @@ export class ReportController {
   @get('/reports/count')
   @response(200, {
     description: 'Report model count',
-    content: {'application/json': {schema: CountSchema}},
+    content: { 'application/json': { schema: CountSchema } },
   })
   async count(
     @param.where(Report) where?: Where<Report>,
@@ -65,7 +65,7 @@ export class ReportController {
       'application/json': {
         schema: {
           type: 'array',
-          items: getModelSchemaRef(Report, {includeRelations: true}),
+          items: getModelSchemaRef(Report, { includeRelations: true }),
         },
       },
     },
@@ -79,13 +79,13 @@ export class ReportController {
   @patch('/reports')
   @response(200, {
     description: 'Report PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
+    content: { 'application/json': { schema: CountSchema } },
   })
   async updateAll(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Report, {partial: true}),
+          schema: getModelSchemaRef(Report, { partial: true }),
         },
       },
     })
@@ -100,13 +100,13 @@ export class ReportController {
     description: 'Report model instance',
     content: {
       'application/json': {
-        schema: getModelSchemaRef(Report, {includeRelations: true}),
+        schema: getModelSchemaRef(Report, { includeRelations: true }),
       },
     },
   })
   async findById(
     @param.path.string('id') id: string,
-    @param.filter(Report, {exclude: 'where'}) filter?: FilterExcludingWhere<Report>
+    @param.filter(Report, { exclude: 'where' }) filter?: FilterExcludingWhere<Report>
   ): Promise<Report> {
     return this.reportRepository.findById(id, filter);
   }
@@ -120,7 +120,7 @@ export class ReportController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Report, {partial: true}),
+          schema: getModelSchemaRef(Report, { partial: true }),
         },
       },
     })
@@ -146,5 +146,48 @@ export class ReportController {
   })
   async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.reportRepository.deleteById(id);
+  }
+
+  @get('/reports/complete')
+  @response(200, {
+    description: 'Array of Report model instances',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(Report, { includeRelations: true }),
+        },
+      },
+    },
+  })
+  async latestReports(
+    @param.filter(Report) filter?: Filter<Report>,
+  ): Promise<Report[]> {
+    const reportCollection = (this.reportRepository.dataSource.connector as any).collection("Report");
+    return await reportCollection.aggregate([
+      { $match: {} },
+      {
+        $sort: {
+          "created": -1,
+        }
+      },
+      {
+        $group: {
+          "_id": { admin2Pcode: "$admin2Pcode", admin3Pcode: "$admin3Pcode" },
+          admin2Name_en: { $first: '$admin2Name_en' },
+          admin3Pcode: { $first: '$admin3Pcode' },
+          admin3Name_en: { $first: '$admin3Name_en' },
+          HH: { $first: '$HH' },
+          deaths: { $first: '$deaths' },
+          PG: { $first: '$PG' },
+          LW: { $first: '$LW' },
+          U5: { $first: '$U5' },
+          camps: { $first: '$camps' },
+          injuries: { $first: '$injuries' },
+          created: { $first: '$created' },
+          userId: { $first: '$userId' },
+        }
+      }
+    ]).get();
   }
 }
