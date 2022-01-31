@@ -175,6 +175,7 @@ export class ReportController {
         $group: {
           "_id": { admin2Pcode: "$admin2Pcode", admin3Pcode: "$admin3Pcode" },
           admin2Name_en: { $first: '$admin2Name_en' },
+          admin2Pcode: { $first: '$admin2Pcode' },
           admin3Pcode: { $first: '$admin3Pcode' },
           admin3Name_en: { $first: '$admin3Name_en' },
           HH: { $first: '$HH' },
