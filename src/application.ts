@@ -33,6 +33,7 @@ export class EngineApplication extends BootMixin(
     //DATABASE CONFIGS
     this.bind('datasources.config.db').to({
       name: 'db',
+      url: process.env.DB_URL,
       connector: process.env.DB_CONNECTOR,
       hostname: process.env.DB_HOST,
       port: process.env.DB_PORT,
